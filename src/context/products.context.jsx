@@ -1,4 +1,6 @@
-import SHOP_DATA from '../shop-data.json'
+import SHOP_DATA from '../shop-data.js'
+
+import { getCategoriesAndDocuments } from "../utils/firebase/firebase.utils";
 
 import { createContext, useEffect, useState } from "react";
 
@@ -14,12 +16,20 @@ export const ProductsContext = createContext({
 //Wrapping components in this provider component allows child
 //components to access the context component.
 export const ProductsProvider = ({ children }) => {
-    const [products, setProducts] = useState(SHOP_DATA);
+    const [products, setProducts] = useState([]);
+    // useEffect(() => {
+    //     addCollectionAndDocuments('categories', SHOP_DATA)
+    // }, [])
     const value = { products };
 
-    // useEffect(() => {
-    //     setProducts(SHOP_DATA)
-    // }, [])
+    useEffect(() => {
+        const getCategoriesMap = async () => {
+            const categoryMap = await getCategoriesAndDocuments();
+            console.log(categoryMap);
+        }
+
+        getCategoriesMap();
+    }, [])
 
     return <ProductsContext.Provider value={ value }>{ children }</ProductsContext.Provider>
 }
