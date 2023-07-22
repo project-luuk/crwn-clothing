@@ -6,7 +6,7 @@ import { UserContext } from "../../context/user.context";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
-import "./navigation.styles.scss"
+import { NavigationContainer, NavLinks, NavLink, LogoContainer } from "./navigation.styles"
 import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
 import {CartContext} from "../../context/cart.context";
@@ -18,27 +18,27 @@ const Navigation = () => {
     const { isCartOpen } = useContext(CartContext)
     return (
         <Fragment>
-            <div className='navigation'>
-                <Link className='logo-container' to='/'>
+            <NavigationContainer>
+                <LogoContainer to='/'>
                     <CrwnLogo className='logo' />
-                </Link>
-                <div className='nav-links-container'>
-                    <Link className='nav-link' to='/shop'>
+                </LogoContainer>
+                <NavLinks>
+                    <NavLink to='/shop'>
                         SHOP
-                    </Link>
+                    </NavLink>
                     {
                         currentUser ?
-                            <span className='nav-link' onClick={ signOutUser }>SIGN OUT</span>
+                            <NavLink as='span' onClick={ signOutUser }>SIGN OUT</NavLink>
                         :
-                            <Link className='nav-link' to='/auth'>
+                            <NavLink to='/auth'>
                                 SIGN IN
-                            </Link>
+                            </NavLink>
                     }
                     <CartIcon />
-                </div>
+                </NavLinks>
                 {/*If both (all) are true, return the last object*/}
                 {isCartOpen && <CartDropdown />}
-            </div>
+            </NavigationContainer>
             <Outlet />
         </Fragment>
     );
